@@ -1,0 +1,23 @@
+{
+  "name": "airtable-to-redis",
+  "version": "0.1.0",
+  "description": "Airtable to Redis loader",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amirlogic/airtable-to-redis.git"
+  },
+  "author": "Amir Hachaichi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amirlogic/airtable-to-redis/issues"
+  },
+  "homepage": "https://github.com/amirlogic/airtable-to-redis#readme",
+  "dependencies": {
+    "airtable": "^0.12.1",
+    "redis": "^4.6.7"
+  }
+}
