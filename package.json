@@ -1,6 +1,6 @@
 {
   "name": "airtable-to-redis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Airtable to Redis loader",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,6 @@
   "homepage": "https://github.com/amirlogic/airtable-to-redis#readme",
   "dependencies": {
     "airtable": "^0.12.1",
-    "async": "^3.2.4",
     "redis": "^4.6.7"
   }
 }
