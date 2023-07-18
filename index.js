@@ -4,18 +4,18 @@ let redcli;
 
 const Airtable = require('airtable');
 
-const connectRedis = (config)=>{
+const connectRedis = (config={})=>{
 
     return new Promise((resolve,reject)=>{
 
         redcli = redis.createClient({
-            url: config.redisUrl
+            url: config?.redisUrl
         });
 
         redcli.on('error', (err) => { 
             
             reject(err)
-            console.log('Redis Client Error', err)
+            console.error('Redis Client Error', err)
         } );
 
         redcli.on('ready', () => console.log('Redis client is ready'));
@@ -32,32 +32,43 @@ const connectRedis = (config)=>{
     })
 }
 
-const authTokens = ()=>{
+/* const authTokens = ()=>{
+} */
 
-
-}
-
-const getApiData = (req)=>{
+const getApiData = (req={})=>{
 
     let base = new Airtable({apiKey: req?.apikey}).base(req?.base);
 
     // testing
 
-    base(req?.tbl).select({
-        view: 'Grid view'
+    return new Promise((resolve,reject)=>{
 
-    }).firstPage(function(err, records) {
+        base(req?.tbl).select({
+            view: 'Grid view'
 
-        if (err) { console.error(err); return; }
+        }).firstPage(function(err, records) {
 
-        records.forEach(function(record) {
+            if (err) { 
+                //console.error(err);
+                reject(err.statusCode)
+                return; 
+            }
 
-            console.log(record.id,' ',record.fields);
+            let tbldata = []
 
+            records.forEach(function(record) {
+
+                tbldata.push(record.fields)
+                //console.log(record.id,' ',record.fields);
+
+            });
+
+            resolve(tbldata)
         });
-    });
 
+    })
 
+       
 }
 
 const redTokens = (redkey='null')=>{
@@ -82,9 +93,14 @@ const redTokens = (redkey='null')=>{
 
 }
 
-const dataToRedis = ()=>{
+const dataToRedis = (key='null',atdata=[])=>{
 
+    return redcli.json.set(key, '$', atdata);
+}
 
+const redisData = (key='null')=>{
+
+    return redcli.json.get(key);
 }
 
 const refreshToken = ()=>{
@@ -92,4 +108,4 @@ const refreshToken = ()=>{
 
 }
 
-module.exports = { connectRedis, getApiData, dataToRedis, refreshToken, redTokens }
+module.exports = { connectRedis, getApiData, dataToRedis, refreshToken, redTokens, redisData, redcli }
